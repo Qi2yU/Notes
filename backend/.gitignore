@@ -3,8 +3,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-kamanote-tech.sql
-问题.md
 ### STS ###
 .apt_generated
 .classpath
