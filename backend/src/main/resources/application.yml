@@ -58,6 +58,19 @@ mail:
     resend-interval: 60
     template-path: "templates/mail/verify-code.html"
 
+# 智谱AI配置
+zhipu:
+  ai:
+    api-key: f22b521f28ee4627be95303bf3e07b8c.LELtlyWKBWcFYRXe
+    base-url: https://open.bigmodel.cn/api/paas/v4
+    default-model: glm-4-air
+    connect-timeout: 30
+    read-timeout: 60
+    write-timeout: 60
+    max-retries: 3
+    default-temperature: 0.7
+    default-max-tokens: 1000
+
 langchain4j:
   open-ai:
     chat-model:
