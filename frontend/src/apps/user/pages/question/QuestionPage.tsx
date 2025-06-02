@@ -11,6 +11,7 @@ import { Upload } from '@icon-park/react'
 import { EyeOutlined, FireOutlined } from '@ant-design/icons'
 import { NoteList, NoteQueryParams, useNotes } from '../../../../domain/note'
 import { useApp } from '../../../../base/hooks'
+import { AIAssistant } from '../../../../components/ai'
 
 const QuestionPage: React.FC = () => {
   /**
@@ -55,12 +56,6 @@ const QuestionPage: React.FC = () => {
   }
 
   /**
-   * 左侧面板内容
-   * 这里是题目内容或参考资料
-   */
-  const [leftPanelContent, setLeftPanelContent] = useState('')
-  
-  /**
    * 获取和问题相关的笔记列表
    */
   const [noteQueryParams, setNoteQueryParams] = useState<NoteQueryParams>({
@@ -79,47 +74,11 @@ const QuestionPage: React.FC = () => {
     setNoteCollectStatusHandle,
   } = useNotes(noteQueryParams)
 
-  // AI生成笔记样例，逐字逐句平滑显示
-  const [isGenerating, setIsGenerating] = useState(false);
-  
-  const handleAIGenerate = async () => {
-    setLeftPanelContent('') // 清空旧内容
-    if (!app.isLogin) {
-      message.info('请先登录')
-      return
-    }
-    
-    try {
-      setIsGenerating(true);
-      const aicontent = await aiGenerateHandle(Number(questionId));
-      
-      // 逐字显示内容
-      let displayedText = '';
-      let index = 0;
-      
-      const displayInterval = setInterval(() => {
-        if (index < aicontent.length) {
-          displayedText += aicontent[index];
-          setLeftPanelContent(displayedText);
-          index++;
-        } else {
-          clearInterval(displayInterval);
-          setIsGenerating(false); // 显示完成，恢复按钮状态
-          message.success('AI笔记生成完成');
-        }
-      }, 30); // 每30毫秒显示一个字符
-      
-    } catch (error) {
-      message.error('AI生成笔记失败');
-      setIsGenerating(false);
-    }
-  }
-
   /**
    * 提交笔记处理事件
    */
   const [createBtnLoading, setCreateBtnLoading] = useState(false)
-  
+
   /**
    * 用户信息
    * app 信息
@@ -137,7 +96,6 @@ const QuestionPage: React.FC = () => {
     try {
       if (!question?.userNote.finished) {
         const noteId = await createNoteHandle(Number(questionId), value)
-        toggleEditorVisible()
         // 校验一下 noteId
         if (noteId) {
           userFinishedQuestion(noteId, value)
@@ -151,7 +109,6 @@ const QuestionPage: React.FC = () => {
           questionId: Number(questionId),
         })
         message.success('笔记已修改')
-        toggleEditorVisible()
       }
     } catch (e: any) {
       console.log(e.message)
@@ -172,24 +129,17 @@ const QuestionPage: React.FC = () => {
       {/* 编辑器和左侧面板 */}
       {isEditorVisible && (
         <div className="relative mb-4 flex w-full justify-center">
-          {/* 左侧Markdown显示框 */}
+          {/* 左侧AI助手 */}
           <div className="absolute left-[calc(25%-400px)] top-0 w-[350px]">
-            <div className="h-[calc(100vh-var(--header-height)-150px)] overflow-auto border border-gray-200 rounded-md bg-white shadow">
-              <div className="border-b border-gray-200 p-2 bg-gray-50">
-                <span className="font-medium">AI小助手</span>
-                {isGenerating && (
-                  <div className="flex items-center text-blue-500">
-                    <Spin size="small" className="mr-1" />
-                    <span className="text-xs">生成中...</span>
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <MarkdownRender markdown={leftPanelContent} />
-              </div>
+            <div className="h-[calc(100vh-var(--header-height)-150px)] overflow-auto rounded-md border border-gray-200 bg-white shadow">
+              <AIAssistant
+                visible={true}
+                noteContent={value}
+                onClose={() => {}}
+              />
             </div>
           </div>
-          
+
           {/* 原有编辑器区域保持不变 */}
           <div className="w-[900px]">
             <div className="h-[calc(100vh-var(--header-height)-65px)]">
@@ -200,35 +150,24 @@ const QuestionPage: React.FC = () => {
                   </Spin>
                 }
               >
-                <MarkdownEditor
-                  value={value}
-                  setValue={setValueHandle}
-                ></MarkdownEditor>
+                <MarkdownEditor value={value} setValue={setValueHandle} />
               </Suspense>
-            </div>
-            <div className="sticky bottom-0 z-20 flex justify-end gap-2 border-t border-gray-200 bg-white p-4 shadow">
-              <Button
-                icon={<FireOutlined />}
-                onClick={handleAIGenerate}
-                loading={isGenerating}
-                disabled={isGenerating}
-              >
-                {isGenerating ? 'AI生成中...' : 'AI生成笔记样例'}
-              </Button>
-              <Button
-                icon={<EyeOutlined />}
-                onClick={() => setIsShowPreview(true)}
-              >
-                预览笔记
-              </Button>
-              <Button
-                type="primary"
-                icon={<Upload />}
-                loading={createBtnLoading}
-                onClick={createOrUpdateNoteClickHandle}
-              >
-                {question?.userNote.finished ? '修改笔记' : '提交笔记'}
-              </Button>
+              <div className="sticky bottom-0 z-20 flex justify-end gap-2 border-t border-gray-200 bg-white p-4 shadow">
+                <Button
+                  icon={<EyeOutlined />}
+                  onClick={() => setIsShowPreview(true)}
+                >
+                  预览笔记
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<Upload />}
+                  loading={createBtnLoading}
+                  onClick={createOrUpdateNoteClickHandle}
+                >
+                  {question?.userNote.finished ? '修改笔记' : '提交笔记'}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -246,13 +185,12 @@ const QuestionPage: React.FC = () => {
         <div className="w-[700px]">
           <Panel>
             <NoteList
-              showQuestion={false}
               noteList={noteList}
               pagination={pagination}
-              queryParams={noteQueryParams}
-              setQueryParams={setNoteQueryParams}
               setNoteLikeStatusHandle={setNoteLikeStatusHandle}
               setNoteCollectStatusHandle={setNoteCollectStatusHandle}
+              queryParams={noteQueryParams}
+              setQueryParams={setNoteQueryParams}
             />
           </Panel>
         </div>
