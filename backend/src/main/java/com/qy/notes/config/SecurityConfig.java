@@ -16,13 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-/**
- * @ClassName Security配置类
- * @Description ToDo
- * @Author Tong
- * @LastChangeDate 2024-12-17 15:40
- * @Version v1.0
- */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

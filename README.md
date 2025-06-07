@@ -1,13 +1,12 @@
-# 卡码笔记 -盗版(Kama Notes) 🤖✨
+# **智栈笔记**(intellij Notes) 🤖✨
 
 卡码笔记是一个面向程序员的在线笔记分享和学习平台，集成了**智谱GLM-4-Air大模型**，为程序员提供一个高效的知识分享和交流空间。
 
-## 🚀 新增AI功能特性
+## 🚀 AI功能特性
 
 ### 🤖 智能AI助手
 - **💬 智能对话**: 与AI进行技术问题讨论，获得专业建议
 - **📝 笔记分析**: 自动生成摘要、建议标签和分类
-- **🔍 代码解释**: 详细解释代码功能和实现原理
 - **✨ 内容优化**: 智能优化笔记结构和表达方式
 - **📋 大纲生成**: 自动生成清晰的内容大纲
 - **🏷️ 标签推荐**: 基于内容智能推荐相关标签
@@ -32,7 +31,6 @@ graph LR
 - 📱 响应式设计，支持多端访问
 - 🤖 **AI智能助手** - 集成智谱GLM-4-Air模型
 - ✨ **智能内容分析** - 自动摘要、标签、优化建议
-- 💡 **代码智能解释** - AI驱动的代码分析和解释
 
 ## 技术栈
 
@@ -94,7 +92,7 @@ graph LR
 
 1. 克隆项目
 ```bash
-git clone https://github.com/youngyangyang04/kamanotes.git
+git clone https://github.com/Qi2yU/Notes.git
 cd kama-notes
 ```
 
@@ -112,16 +110,9 @@ IDEA直接启动
 cd backend
 mvn spring-boot:run
 ```
+4. 数据库文件请联系作者取得
 
-4. 数据库配置
-- 创建数据库：*kamanote_tech*
-- 执行SQL脚本：kamanote-tech.sql
-
-5. **AI功能测试**
-```bash
-# 访问AI测试页面
-http://localhost:3000/ai-test
-```
+   
 
 ## 🤖 AI功能使用指南
 
@@ -137,7 +128,6 @@ http://localhost:3000/ai-test
 3. 点击"AI分析"选择功能：
    - 生成摘要：提取核心要点
    - 建议标签：推荐相关标签
-   - 代码解释：解释代码功能
    - 内容优化：改善表达结构
    - 生成大纲：创建内容结构
 
@@ -218,8 +208,6 @@ http://localhost:3000/ai-test
 │   │   └── pages/
 │   │       └── AITestPage.tsx       # AI功能测试页面
 │   └── package.json
-└── docs/
-    └── AI_MICROSERVICE_ARCHITECTURE.md  # AI架构文档
 ```
 
 ## 🤖 AI服务配置
@@ -239,52 +227,8 @@ zhipu:
 - `POST /api/ai/chat` - 智能对话
 - `POST /api/ai/summarize` - 生成摘要
 - `POST /api/ai/suggest-tags` - 建议标签
-- `POST /api/ai/explain-code` - 代码解释
 - `POST /api/ai/optimize` - 内容优化
 - `GET /api/ai/status` - 服务状态
 
-## 🚀 部署说明
 
-### Docker部署（推荐）
-```bash
-# 构建镜像
-docker-compose build
-
-# 启动服务
-docker-compose up -d
-```
-
-### 传统部署
-1. 部署MySQL数据库
-2. 部署Redis缓存
-3. 启动后端服务（Spring Boot）
-4. 部署前端静态文件（Nginx）
-
-## 贡献指南
-
-1. Fork 本仓库
-2. 创建新的分支: `git checkout -b feature/your-feature`
-3. 提交更改: `git commit -m 'Add some feature'`
-4. 推送到分支: `git push origin feature/your-feature`
-5. 提交Pull Request
-
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-
-## 🙏 致谢
-
-- 感谢智谱AI提供的GLM-4-Air模型支持
-- 感谢所有贡献者的支持和努力
-- 感谢开源社区提供的优秀框架和工具
-
-## 📞 联系我们
-
-- 项目地址：[GitHub](https://github.com/youngyangyang04/kamanotes)
-- 问题反馈：[Issues](https://github.com/youngyangyang04/kamanotes/issues)
-- 功能建议：[Discussions](https://github.com/youngyangyang04/kamanotes/discussions)
-
----
-
-**🎉 现在就开始使用AI增强的卡码笔记，让你的学习和创作更加智能高效！**
 
